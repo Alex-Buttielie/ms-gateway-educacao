@@ -1,4 +1,11 @@
-branches: [ "main" ]
+name: Java CI Gateway Educacao
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
