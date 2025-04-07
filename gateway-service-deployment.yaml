@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-gateway
+  template:
+    metadata:
+      labels:
+        app: eureka-gateway
+    spec:
+      containers:
+        - name: eureka-gateway
+          image: ms-gateway
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
+          env:
+            - name: EUREKA_SERVER_URL
+              value: "http://eureka-server:8081/eureka/"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-gateway
+spec:
+  selector:
+    app: eureka-gateway
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+      nodePort: 30002
+  type: NodePort
