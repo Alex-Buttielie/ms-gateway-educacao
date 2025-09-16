@@ -15,4 +15,4 @@ spec:
         name: cpu  # Métrica de CPU
         target:
           type: Utilization
-          averageUtilization: 50  # Se o uso de CPU for maior que 50%, o Kubernetes irá escalar
+          averageUtilization: 80  # Se o uso de CPU for maior que 50%, o Kubernetes irá escalar
