@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: eureka-gateway
-          image: alexbuttielie/ms-gateway-educacao:gateway-main
+          image: alexbuttielie/ms-gateway-educacao:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8082

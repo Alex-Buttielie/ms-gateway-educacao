@@ -31,8 +31,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t alexbuttielie/ms-gateway-educacao:gateway-main -f Dockerfile .
-          docker push alexbuttielie/ms-gateway-educacao:gateway-main
+          docker build -t alexbuttielie/ms-gateway-educacao:latest -f Dockerfile .
+          docker push alexbuttielie/ms-gateway-educacao:latest
 
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@v0.1.10
@@ -42,7 +42,7 @@ jobs:
           port: 22022
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull alexbuttielie/ms-gateway-educacao:gateway-main
+            docker pull alexbuttielie/ms-gateway-educacao:latest
             docker stop eureka-gateway || true
             docker rm eureka-gateway || true
-            docker run -d --name eureka-gateway -p 8082:8082 alexbuttielie/ms-gateway-educacao:gateway-main
+            docker run -d --name eureka-gateway -p 8082:8082 alexbuttielie/ms-gateway-educacao:latest
