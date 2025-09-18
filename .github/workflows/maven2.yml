@@ -46,4 +46,3 @@ jobs:
           IMAGE=alexbuttielie/ms-gateway-educacao:latest
           kubectl apply -f k8s/eureka-gateway.yaml
           kubectl set image deployment/eureka-gateway eureka-gateway=$IMAGE
-          kubectl rollout status deployment/eureka-gateway --timeout=120s
