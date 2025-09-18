@@ -34,15 +34,16 @@ jobs:
           docker build -t alexbuttielie/ms-gateway-educacao:latest -f Dockerfile .
           docker push alexbuttielie/ms-gateway-educacao:latest
 
-      - name: Deploy to VPS via SSH
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: root
-          port: 22022
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker pull alexbuttielie/ms-gateway-educacao:latest
-            docker stop eureka-gateway || true
-            docker rm eureka-gateway || true
-            docker run -d --name eureka-gateway -p 8082:8082 alexbuttielie/ms-gateway-educacao:latest
+      - name: Set up Kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+          kubectl cluster-info
+
+      - name: Deploy Eureka Gateway
+        run: |
+          IMAGE=alexbuttielie/ms-gateway-educacao:latest
+          kubectl apply -f k8s/eureka-gateway.yaml
+          kubectl set image deployment/eureka-gateway eureka-gateway=$IMAGE
+          kubectl rollout status deployment/eureka-gateway --timeout=120s
